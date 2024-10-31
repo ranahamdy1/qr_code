@@ -4,7 +4,10 @@ import 'bloc_observer.dart';
 import 'core/cache_helper.dart';
 import 'core/dio_helper.dart';
 import 'features/auth/login/presentaion/login_screen.dart';
+import 'package:mockito/annotations.dart';
+import 'package:qr_code/core/hive_services.dart';
 
+@GenerateMocks([HiveService])
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = const SimpleBlocObserver();
