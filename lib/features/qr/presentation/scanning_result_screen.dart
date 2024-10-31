@@ -57,14 +57,17 @@ class ScanningResultScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(11),
                   color: Colors.grey[200]
                 ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 18.0),
-                      child: Image.asset('assets/images/icon3.png'),
-                    ),
-                    Text(code, style: const TextStyle(fontSize: 16),),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 18.0),
+                        child: Image.asset('assets/images/icon3.png'),
+                      ),
+                      Text(code, style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
               ),
             ),

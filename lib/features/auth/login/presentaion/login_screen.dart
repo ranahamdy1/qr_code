@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code/core/widgets/custom_button.dart';
+import 'package:qr_code/core/widgets/custom_text_form_field.dart';
 import 'package:qr_code/features/auth/login/controller/cubit/login_cubit.dart';
 import 'package:qr_code/features/qr/presentation/qr_scanner_screen.dart';
 
@@ -15,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool isObsecuretext = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                content: Text(
-                  state.msg,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                content: Text(state.msg, style: const TextStyle(color: Colors.white,),),
                 backgroundColor: Colors.red,
               ),
             );
@@ -72,37 +69,41 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 66),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(),
-                              labelText: "Enter your email",
-                              focusColor: Color(0xffFE7D55),
-                            ),
+                          CustomTextFormFeild(
+                            hintText: 'Enter your email',
+                            lableText: "Email",
+                            kbType: TextInputType.emailAddress,
                             controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            onChanged: (value) {},
+                            onChanged: (value) {  },
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "email must not be empty";
+                                return "Email must not be empty";
                               }
                               return null;
                             },
-                            ),
+                          ),
                           const SizedBox(height: 22),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(),
-                              suffixIcon: Icon(Icons.remove_red_eye),
-                              labelText: "Password",
-                            ),
+                          CustomTextFormFeild(
+                            hintText: 'Enter your password',
+                            lableText: "Password",
+                            kbType: TextInputType.visiblePassword,
                             controller: passwordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            onChanged: (value) {},
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isObsecuretext = !isObsecuretext;
+                                });
+                              },
+                              child: Icon(
+                                isObsecuretext ? Icons.visibility_off : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onChanged: (value) {  },
+                            isObscureText: isObsecuretext,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "password must not be empty";
+                                return "Password must not be empty";
                               }
                               return null;
                             },

@@ -6,14 +6,12 @@ import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
-
   @override
   State<QrScannerScreen> createState() => _QrScannerScreenState();
 }
 
 class _QrScannerScreenState extends State<QrScannerScreen> {
   bool isScanCompleted = false;
-
   void closeScreen() {
     isScanCompleted = false;
   }
@@ -37,10 +35,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                       Image.asset('assets/images/icon1.png'),
                     ],
                   ),
-                  const Text(
-                    'Scan QR code',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+                  const Text('Scan QR code', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                   const SizedBox(height: 10),
                   const Text(
                     'Place QR code inside the frame to scan please\navoid shake to get results quickly',
@@ -59,10 +54,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                       if (!isScanCompleted && barcode.barcodes.isNotEmpty) {
                         String code = barcode.barcodes.first.rawValue ?? '----';
                         isScanCompleted = true;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScanningResultScreen(
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ScanningResultScreen(
                               closeScreen: closeScreen,
                               code: code,
                             ),
