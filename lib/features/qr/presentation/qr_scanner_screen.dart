@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_code/core/hive_services.dart';
 import 'package:qr_code/core/widgets/custom_button.dart';
 import 'package:qr_code/features/qr/presentation/scanning_result_screen.dart';
 import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
@@ -14,6 +15,14 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   bool isScanCompleted = false;
   void closeScreen() {
     isScanCompleted = false;
+  }
+
+  final hiveService = HiveService();
+
+  @override
+  void initState() {
+    super.initState();
+    hiveService.initHive();
   }
 
   @override
@@ -35,7 +44,10 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                       Image.asset('assets/images/icon1.png'),
                     ],
                   ),
-                  const Text('Scan QR code', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  const Text(
+                    'Scan QR code',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 10),
                   const Text(
                     'Place QR code inside the frame to scan please\navoid shake to get results quickly',
@@ -50,11 +62,16 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               child: Stack(
                 children: [
                   MobileScanner(
-                    onDetect: (BarcodeCapture barcode) {
+                    onDetect: (BarcodeCapture barcode) async {
                       if (!isScanCompleted && barcode.barcodes.isNotEmpty) {
                         String code = barcode.barcodes.first.rawValue ?? '----';
                         isScanCompleted = true;
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ScanningResultScreen(
+                        await hiveService.saveScanResult(code);
+                        print("save in hive ${hiveService.getAllScanResults()}");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ScanningResultScreen(
                               closeScreen: closeScreen,
                               code: code,
                             ),
